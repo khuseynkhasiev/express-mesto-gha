@@ -1,22 +1,10 @@
 const router = require('express').Router();
-const user = require('../models/userSchema')
-router.get('/', (req, res) => {
-  //возвращает всех пользователей
-  console.log('роут гет сработал');
-})
+const {getUsers, getUser, createUser} = require('../controllers/userController');
 
-router.get('/:userId', (req, res) => {
-  //возвращает пользователя по ID
-})
+router.get('/', getUsers);
 
-router.post('/', (req, res) => {
-  // создаем пользователя
-  const {name, about, avatar} = req.body;
-  console.log(req);
-  console.log('роут пост сработал');
-  user.create({name, about, avatar})
-    .then(user => res.send({data: user}))
-    .catch(err => res.status(500).send({message: 'Произошла ошибка'}))
-})
+router.get('/:userId', getUser);
+
+router.post('/', createUser);
 
 module.exports = router;
