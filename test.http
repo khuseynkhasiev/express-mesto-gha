@@ -1,3 +1,14 @@
+GET http://localhost:3000/cards
+Accept: application/json
+
+###
+DELETE http://localhost:3000/cards/64006244346dc7533d1e8f54
+Accept: application/json
+
+###
+
+
+
 GET http://localhost:3000/users
 Accept: application/json
 
@@ -13,3 +24,4 @@ Accept: application/json
 Content-Type: application/json
 
 ###
+
