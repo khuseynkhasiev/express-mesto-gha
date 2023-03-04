@@ -24,7 +24,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   useNewUrlParser: true
 })
   .then(() => console.log('успешное подключение к базе!'))
-  .catch(e => console.log(`${e.name} - ошибка подключения к базе`))
+  .catch(e => console.log(`${e.name} - ошибка подключения к базе!`))
 
 app.listen(PORT, () => {
   console.log(`Порт - ${PORT}, сервер запущен`);

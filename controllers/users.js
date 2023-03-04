@@ -52,10 +52,10 @@ const patchUser = async (req, res) => {
     }
     return res.status(200).send(user);
   } catch (e) {
-        if(e.name === 'ValidationError' || e.name === 'CastError') {
-          console.error(e);
-          return res.status(ERROR_INACCURATE_DATA).send({message: 'Переданы некорректные данные при обновлении профиля'});
-        }
+    if (e.name === 'ValidationError' || e.name === 'CastError') {
+      console.error(e);
+      return res.status(ERROR_INACCURATE_DATA).send({message: 'Переданы некорректные данные при обновлении профиля'});
+    }
     console.error(e);
     return res.status(ERROR_INTERNAL_SERVER).send({message: 'На сервере произошла ошибка'});
   }
@@ -71,7 +71,7 @@ const patchUserAvatar = async (req, res) => {
     }
     return res.status(200).send(user);
   } catch (e) {
-    if(e.name === 'ValidationError' || e.name === 'CastError') {
+    if (e.name === 'ValidationError' || e.name === 'CastError') {
       console.error(e);
       return res.status(ERROR_INACCURATE_DATA).send({message: 'Переданы некорректные данные при обновлении профиля'});
     }
