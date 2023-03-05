@@ -3,6 +3,7 @@ const {
   ERROR_INACCURATE_DATA,
   ERROR_NOT_FOUND,
   ERROR_INTERNAL_SERVER,
+  ERROR_BAD_REQUEST,
 } = require('../errors');
 
 const getUsers = async (req, res) => {
@@ -28,6 +29,12 @@ const getUser = async (req, res) => {
     }
     return res.status(200).send(user);
   } catch (e) {
+    if (e.name === 'ValidationError' || e.name === 'CastError') {
+      console.log(e);
+      return res.status(ERROR_BAD_REQUEST).send({
+        message: 'Переданы некорректные данные',
+      });
+    }
     console.error(e);
     return res
       .status(ERROR_INTERNAL_SERVER)
