@@ -57,10 +57,10 @@ const patchUser = async (req, res) => {
   const userId = req.user._id;
   try {
     const { name, about } = req.body;
-    const user = await User.findByIdAndUpdate(
+    const user = await User.findOneAndUpdate(
       userId,
       { name, about },
-      { new: true },
+      { new: true, runValidators: true },
     );
     if (!user) {
       return res
@@ -86,10 +86,10 @@ const patchUserAvatar = async (req, res) => {
   const userId = req.user._id;
   try {
     const { avatar } = req.body;
-    const user = await User.findByIdAndUpdate(
+    const user = await User.findOneAndUpdate(
       userId,
       { avatar },
-      { new: true },
+      { new: true, runValidators: true },
     );
     if (!user) {
       return res
