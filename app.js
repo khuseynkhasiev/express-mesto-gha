@@ -19,6 +19,7 @@ app.use((req, res, next) => {
 });
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
+app.use('*', (req, res) => res.status(404).send({ message: '404 Not Found' }));
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   useNewUrlParser: true,
