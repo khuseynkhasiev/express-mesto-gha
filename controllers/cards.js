@@ -3,7 +3,6 @@ const {
   ERROR_INACCURATE_DATA,
   ERROR_NOT_FOUND,
   ERROR_INTERNAL_SERVER,
-  ERROR_BAD_REQUEST,
 } = require('../errors');
 
 const getCards = async (req, res) => {
@@ -51,7 +50,7 @@ const deleteCard = async (req, res) => {
   } catch (e) {
     if (e.name === 'ValidationError' || e.name === 'CastError') {
       console.log(e);
-      return res.status(ERROR_BAD_REQUEST).send({
+      return res.status(ERROR_INACCURATE_DATA).send({
         message: 'Переданы некорректные данные',
       });
     }
