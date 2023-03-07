@@ -10,7 +10,6 @@ const getUsers = async (req, res) => {
     const users = await User.find({});
     return res.status(200).send(users);
   } catch (e) {
-    console.error(e);
     return res
       .status(ERROR_INTERNAL_SERVER)
       .send({ message: 'На сервере произошла ошибка' });
@@ -28,13 +27,11 @@ const getUser = async (req, res) => {
     }
     return res.status(200).send(user);
   } catch (e) {
-    if (e.name === 'ValidationError' || e.name === 'CastError') {
-      console.log(e);
+    if (e.name === 'CastError') {
       return res.status(ERROR_INACCURATE_DATA).send({
         message: 'Переданы некорректные данные',
       });
     }
-    console.error(e);
     return res
       .status(ERROR_INTERNAL_SERVER)
       .send({ message: 'На сервере произошла ошибка' });
@@ -46,13 +43,11 @@ const createUser = async (req, res) => {
     const user = await User.create(req.body);
     return res.status(201).send(user);
   } catch (e) {
-    if (e.name === 'ValidationError' || e.name === 'CastError') {
-      console.log(e);
+    if (e.name === 'ValidationError') {
       return res.status(ERROR_INACCURATE_DATA).send({
         message: 'Переданы некорректные данные при создании пользователя',
       });
     }
-    console.log(e);
     return res
       .status(ERROR_INTERNAL_SERVER)
       .send({ message: 'На сервере произошла ошибка' });
@@ -76,12 +71,10 @@ const patchUser = async (req, res) => {
     return res.status(200).send(user);
   } catch (e) {
     if (e.name === 'ValidationError' || e.name === 'CastError') {
-      console.error(e);
       return res.status(ERROR_INACCURATE_DATA).send({
         message: 'Переданы некорректные данные при обновлении профиля',
       });
     }
-    console.error(e);
     return res
       .status(ERROR_INTERNAL_SERVER)
       .send({ message: 'На сервере произошла ошибка' });
@@ -105,12 +98,10 @@ const patchUserAvatar = async (req, res) => {
     return res.status(200).send(user);
   } catch (e) {
     if (e.name === 'ValidationError' || e.name === 'CastError') {
-      console.error(e);
       return res.status(ERROR_INACCURATE_DATA).send({
         message: 'Переданы некорректные данные при обновлении профиля',
       });
     }
-    console.error(e);
     return res
       .status(ERROR_INTERNAL_SERVER)
       .send({ message: 'На сервере произошла ошибка' });

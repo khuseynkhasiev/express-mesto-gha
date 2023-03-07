@@ -10,7 +10,6 @@ const getCards = async (req, res) => {
     const cards = await Card.find({});
     return res.status(200).send(cards);
   } catch (e) {
-    console.error(e);
     return res
       .status(ERROR_INTERNAL_SERVER)
       .send({ message: 'На сервере произошла ошибка' });
@@ -25,12 +24,10 @@ const createCard = async (req, res) => {
     return res.status(201).send(card);
   } catch (e) {
     if (e.name === 'ValidationError' || e.name === 'CastError') {
-      console.log(e);
       return res.status(ERROR_INACCURATE_DATA).send({
         message: 'Переданы некорректные данные при создании карточки',
       });
     }
-    console.error(e);
     return res
       .status(ERROR_INTERNAL_SERVER)
       .send({ message: 'На сервере произошла ошибка' });
@@ -48,13 +45,11 @@ const deleteCard = async (req, res) => {
     }
     return res.status(200).send(card);
   } catch (e) {
-    if (e.name === 'ValidationError' || e.name === 'CastError') {
-      console.log(e);
+    if (e.name === 'CastError') {
       return res.status(ERROR_INACCURATE_DATA).send({
         message: 'Переданы некорректные данные',
       });
     }
-    console.error(e);
     return res
       .status(ERROR_INTERNAL_SERVER)
       .send({ message: 'На сервере произошла ошибка' });
@@ -79,12 +74,10 @@ const putCardLike = async (req, res) => {
     return res.status(200).send(card);
   } catch (e) {
     if (e.name === 'ValidationError' || e.name === 'CastError') {
-      console.log(e);
       return res.status(ERROR_INACCURATE_DATA).send({
         message: 'Переданы некорректные данные для постановки/снятии лайка',
       });
     }
-    console.error(e);
     return res
       .status(ERROR_INTERNAL_SERVER)
       .send({ message: 'На сервере произошла ошибка' });
@@ -107,12 +100,10 @@ const deleteCardLike = async (req, res) => {
     return res.status(200).send(card);
   } catch (e) {
     if (e.name === 'ValidationError' || e.name === 'CastError') {
-      console.log(e);
       return res.status(ERROR_INACCURATE_DATA).send({
         message: 'Переданы некорректные данные для постановки/снятии лайка',
       });
     }
-    console.error(e);
     return res
       .status(ERROR_INTERNAL_SERVER)
       .send({ message: 'На сервере произошла ошибка' });
