@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const bcrypt = require('bcryptjs');
-const jsonWebToken = require('jsonwebtoken');
-const { ERROR_UNAUTHORIZED } = require('../errors');
 
 const userSchema = new mongoose.Schema({
   name: {
