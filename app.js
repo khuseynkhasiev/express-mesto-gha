@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { errors, celebrate, Joi } = require('celebrate');
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
 const { ERROR_NOT_FOUND } = require('./errors');
@@ -22,8 +24,21 @@ app.use((req, res, next) => {
   };
   next();
 });
-app.post('/signup', createUser);
-app.post('/signin', login);
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required(),
+    password: Joi.string().required(),
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string(),
+  }).unknown(true),
+}), createUser);
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required(),
+    password: Joi.string().required(),
+  }).unknown(true),
+}), login);
 
 app.use(auth);
 app.use('/cards', cardRouter);
@@ -34,6 +49,7 @@ app.use('*', (req, res, next) => {
   err.statusCode = ERROR_NOT_FOUND;
   next(err);
 });
+app.use(errors());
 app.use(errorHandler);
 
 app.listen(PORT, () => {
