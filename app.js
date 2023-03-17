@@ -40,7 +40,7 @@ app.post('/signin', celebrate({
   }).unknown(true),
 }), login);
 
-app.use(auth);
+/* app.use(auth); */
 app.use('/cards', cardRouter);
 app.use('/users', userRouter);
 
