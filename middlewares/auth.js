@@ -6,16 +6,23 @@ module.exports.auth = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    return res
-      .status(ERROR_UNAUTHORIZED).send({ message: 'Необходима авторизация' });
+    /*    return res
+      .status(ERROR_UNAUTHORIZED).send({ message: 'Необходима авторизация' }); */
+
+    const err = new Error('Необходима авторизация');
+    err.statusCode = ERROR_UNAUTHORIZED;
+    next(err);
   }
   const token = authorization.replace('Bearer ', '');
 
   let payload;
   try {
     payload = jsonWebToken.verify(token, 'some-secret-key');
-  } catch (err) {
-    return res.status(ERROR_UNAUTHORIZED).send({ message: 'Необходима авторизация' });
+  } catch (e) {
+    /* return res.status(ERROR_UNAUTHORIZED).send({ message: 'Необходима авторизация' }); */
+    const err = new Error('Необходима авторизация');
+    err.statusCode = ERROR_UNAUTHORIZED;
+    next(err);
   }
   req.user = payload;
   next();
