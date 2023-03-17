@@ -19,7 +19,8 @@ const getCards = async (req, res, next) => {
 
 // eslint-disable-next-line consistent-return
 const createCard = async (req, res, next) => {
-  const userId = req.user._id;
+  /* const userId = req.user._id; */
+  const userId = req.cookies.jsonWebToken;
   const { name, link } = req.body;
   try {
     const card = await Card.create({ name, link, owner: userId });
@@ -74,7 +75,8 @@ const deleteCard = async (req, res, next) => {
 
 // eslint-disable-next-line consistent-return
 const putCardLike = async (req, res, next) => {
-  const userId = req.user._id;
+  /* const userId = req.user._id; */
+  const userId = req.cookies.jsonWebToken;
   const { cardId } = req.params;
 
   try {
@@ -111,7 +113,8 @@ const putCardLike = async (req, res, next) => {
 };
 // eslint-disable-next-line consistent-return
 const deleteCardLike = async (req, res, next) => {
-  const userId = req.user._id;
+  /* const userId = req.user._id; */
+  const userId = req.cookies.jsonWebToken;
   const { cardId } = req.params;
   try {
     const card = await Card.findByIdAndUpdate(

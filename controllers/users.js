@@ -81,7 +81,8 @@ const createUser = (req, res, next) => {
 
 // eslint-disable-next-line consistent-return
 const patchUser = async (req, res, next) => {
-  const userId = req.user._id;
+  /* const userId = req.user._id; */
+  const userId = req.cookies.jsonWebToken;
   try {
     const { name, about } = req.body;
     const user = await User.findOneAndUpdate(
@@ -131,7 +132,7 @@ const patchUser = async (req, res, next) => {
 
 // eslint-disable-next-line consistent-return
 const patchUserAvatar = async (req, res, next) => {
-  const userId = req.user._id;
+  const userId = req.cookies.jsonWebToken;
   try {
     const { avatar } = req.body;
     const user = await User.findOneAndUpdate(
@@ -187,7 +188,11 @@ const login = (req, res, next) => {
       const token = jsonWebToken.sign({ _id: user._id }, 'some-secret-key', {
         expiresIn: '7d',
       });
-      res.status(200).send(token);
+      /* res.status(200).send(token); */
+      res.cookie('jsonWebToken', token, {
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true,
+      }).end();
     })
     .catch((err) => {
       const e = new Error(`${err.message}`);
