@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { errors, celebrate, Joi } = require('celebrate');
 // eslint-disable-next-line import/no-extraneous-dependencies
-const { cookieParser } = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const userRouter = require('./routes/users');
 const cardRouter = require('./routes/cards');
 const { ERROR_NOT_FOUND } = require('./errors');
@@ -14,13 +14,13 @@ const { errorHandler } = require('./middlewares/error-handler');
 const { PORT = 3000 } = process.env;
 
 const app = express();
-app.use(cookieParser());
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   useNewUrlParser: true,
 });
 
 app.use(express.json());
+app.use(cookieParser());
 /* app.use((req, res, next) => {
   req.user = {
     _id: '641219ddf298ad95265a4e42',
