@@ -63,9 +63,11 @@ const createUser = (req, res, next) => {
     .then((hash) => User.create({
       email, password: hash, name, about, avatar,
     }))
-    .then((user) => {
+    .then(() => {
       res.status(201).send(
-        user,
+        {
+          email, name, about, avatar,
+        },
       );
     })
     .catch((e) => {
@@ -196,7 +198,7 @@ const login = (req, res, next) => {
       res.cookie('jsonWebToken', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
-      }).end();
+      }).res({ email });
     })
     .catch((err) => {
       const e = new Error(`${err.message}`);
