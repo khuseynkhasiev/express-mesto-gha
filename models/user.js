@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
       validator(v) {
         return /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/gi.test(v);
       },
+      message: 'Некорректный email',
     },
   },
   password: {
@@ -37,6 +38,7 @@ const userSchema = new mongoose.Schema({
       validator(v) {
         return /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/g.test(v);
       },
+      message: 'Не корректный URL',
     },
   },
 });

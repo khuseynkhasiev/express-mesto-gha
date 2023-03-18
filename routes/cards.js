@@ -8,8 +8,8 @@ const {
 router.get('/', getCards);
 router.post('/', celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    link: Joi.string(),
+    name: Joi.string().min(2).max(30).required(),
+    link: Joi.string().required().regex(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/),
   }).unknown(true),
 }), createCard);
 router.delete('/:cardId', celebrate({
