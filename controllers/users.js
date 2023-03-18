@@ -63,7 +63,11 @@ const createUser = (req, res, next) => {
     .then((hash) => User.create({
       email, password: hash, name, about, avatar,
     }))
-    .then((user) => res.status(201).send(user))
+    .then((user) => {
+      res.status(201).send(
+        user,
+      );
+    })
     .catch((e) => {
       if (e.code === 11000) {
         const err = new Error('Пользователь с такими данными уже существует');

@@ -14,6 +14,10 @@ router.patch('/me', celebrate({
     about: Joi.string().min(2).max(30),
   }).unknown(true),
 }), patchUser);
-router.patch('/me/avatar', patchUserAvatar);
+router.patch('/me/avatar', celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().regex(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/),
+  }).unknown(true),
+}), patchUserAvatar);
 
 module.exports = router;
