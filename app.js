@@ -23,12 +23,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
 
 app.use(express.json());
 app.use(cookieParser());
-/* app.use((req, res, next) => {
-  req.user = {
-    _id: '641219ddf298ad95265a4e42',
-  };
-  next();
-}); */
+
 app.post('/signup', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -48,7 +43,6 @@ app.post('/signin', celebrate({
 app.use(auth);
 app.use('/cards', cardRouter);
 app.use('/users', userRouter);
-
 app.use('*', (req, res, next) => {
   const err = new Error(`${ERROR_NOT_FOUND} Not Found`);
   err.statusCode = ERROR_NOT_FOUND;

@@ -138,10 +138,17 @@ const login = (req, res, next) => {
       const token = jsonWebToken.sign({ _id: user._id }, 'some-secret-key', {
         expiresIn: '7d',
       });
-      res.cookie('jsonWebToken', token, {
-        maxAge: 3600000 * 24 * 7,
-        httpOnly: true,
-      }).end();
+      res
+        .status(200)
+        .cookie('jsonWebToken', token, {
+          maxAge: 3600000 * 24 * 7,
+          httpOnly: true,
+        })
+        .cookie('id', user._id, {
+          maxAge: 3600000 * 24 * 7,
+          httpOnly: true,
+        })
+        .send({ email: user.email });
     })
     .catch((err) => {
       const e = new Error(`${err.message}`);

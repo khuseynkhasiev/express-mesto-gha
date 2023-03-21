@@ -11,16 +11,12 @@ const getCards = async (req, res, next) => {
     return res.status(200).send(cards);
   } catch (e) {
     next(e);
-    /*    return res
-      .status(ERROR_INTERNAL_SERVER)
-      .send({ message: 'На сервере произошла ошибка' }); */
   }
 };
 
 // eslint-disable-next-line consistent-return
 const createCard = async (req, res, next) => {
-  /* const userId = req.user._id; */
-  const userId = req.cookies.jsonWebToken;
+  const userId = req.cookies.id;
   const { name, link } = req.body;
   try {
     const card = await Card.create({ name, link, owner: userId });
@@ -30,19 +26,15 @@ const createCard = async (req, res, next) => {
       const err = new Error('Переданы некорректные данные при создании карточки');
       err.statusCode = ERROR_INACCURATE_DATA;
       next(err);
-      /*      return res.status(ERROR_INACCURATE_DATA).send({
-        message: 'Переданы некорректные данные при создании карточки',
-      }); */
     }
     next(e);
-    /*    return res
-      .status(ERROR_INTERNAL_SERVER)
-      .send({ message: 'На сервере произошла ошибка' }); */
   }
 };
 
 // eslint-disable-next-line consistent-return
 const deleteCard = async (req, res, next) => {
+  const userId = req.cookies.id;
+
   const { cardId } = req.params;
   try {
     const card = await Card.findByIdAndDelete(cardId);
@@ -50,33 +42,27 @@ const deleteCard = async (req, res, next) => {
       const err = new Error('Карточка с указанным _id не найдена');
       err.statusCode = ERROR_NOT_FOUND;
       next(err);
-
-      /*      return res.status(ERROR_NOT_FOUND).send({
-        message: 'Карточка с указанным _id не найдена',
-      }); */
+    } else if (!userId === card.owner) {
+      const err = new Error('Вы не можете удалить карточку другого пользователя');
+      err.statusCode = ERROR_NOT_FOUND;
+      next(err);
+    } else {
+      await Card.deleteOne(card);
+      return res.status(200).send({ message: 'Карточка удалена' });
     }
-    return res.status(200).send(card);
   } catch (e) {
     if (e.name === 'CastError') {
       const err = new Error('Переданы некорректные данные');
       err.statusCode = ERROR_INACCURATE_DATA;
       next(err);
-
-      /*      return res.status(ERROR_INACCURATE_DATA).send({
-        message: 'Переданы некорректные данные',
-      }); */
     }
     next(e);
-    /*    return res
-      .status(ERROR_INTERNAL_SERVER)
-      .send({ message: 'На сервере произошла ошибка' }); */
   }
 };
 
 // eslint-disable-next-line consistent-return
 const putCardLike = async (req, res, next) => {
-  /* const userId = req.user._id; */
-  const userId = req.cookies.jsonWebToken;
+  const userId = req.cookies.id;
   const { cardId } = req.params;
 
   try {
@@ -89,10 +75,6 @@ const putCardLike = async (req, res, next) => {
       const err = new Error('Передан несуществующий _id карточки');
       err.statusCode = ERROR_NOT_FOUND;
       next(err);
-
-      /*      return res.status(ERROR_NOT_FOUND).send({
-        message: 'Передан несуществующий _id карточки',
-      }); */
     }
     return res.status(200).send(card);
   } catch (e) {
@@ -100,21 +82,13 @@ const putCardLike = async (req, res, next) => {
       const err = new Error('Переданы некорректные данные для постановки/снятии лайка');
       err.statusCode = ERROR_INACCURATE_DATA;
       next(err);
-
-      /*      return res.status(ERROR_INACCURATE_DATA).send({
-        message: 'Переданы некорректные данные для постановки/снятии лайка',
-      }); */
     }
     next(e);
-    /*    return res
-      .status(ERROR_INTERNAL_SERVER)
-      .send({ message: 'На сервере произошла ошибка' }); */
   }
 };
 // eslint-disable-next-line consistent-return
 const deleteCardLike = async (req, res, next) => {
-  /* const userId = req.user._id; */
-  const userId = req.cookies.jsonWebToken;
+  const userId = req.cookies.id;
   const { cardId } = req.params;
   try {
     const card = await Card.findByIdAndUpdate(
@@ -126,10 +100,6 @@ const deleteCardLike = async (req, res, next) => {
       const err = new Error('Передан несуществующий _id карточки');
       err.statusCode = ERROR_NOT_FOUND;
       next(err);
-
-      /*      return res.status(ERROR_NOT_FOUND).send({
-        message: 'Передан несуществующий _id карточки',
-      }); */
     }
     return res.status(200).send(card);
   } catch (e) {
@@ -137,15 +107,8 @@ const deleteCardLike = async (req, res, next) => {
       const err = new Error('Переданы некорректные данные для постановки/снятии лайка');
       err.statusCode = ERROR_INACCURATE_DATA;
       next(err);
-
-      /*      return res.status(ERROR_INACCURATE_DATA).send({
-        message: 'Переданы некорректные данные для постановки/снятии лайка',
-      }); */
     }
     next(e);
-    /*    return res
-      .status(ERROR_INTERNAL_SERVER)
-      .send({ message: 'На сервере произошла ошибка' }); */
   }
 };
 
