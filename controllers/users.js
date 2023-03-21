@@ -22,10 +22,9 @@ const getUsers = async (req, res, next) => {
     next(err);
   }
 };
-
 // eslint-disable-next-line consistent-return
 const getUser = async (req, res, next) => {
-  const { userId } = req.params;
+  const userId = req.cookies.id;
   try {
     const user = await User.findById(userId);
     if (!user) {
@@ -45,7 +44,6 @@ const getUser = async (req, res, next) => {
     next(err);
   }
 };
-
 const createUser = (req, res, next) => {
   const {
     email, password, name, about, avatar,
@@ -76,11 +74,10 @@ const createUser = (req, res, next) => {
       next(e);
     });
 };
-
 // eslint-disable-next-line consistent-return
 const patchUser = async (req, res, next) => {
-  /* const userId = req.user._id; */
-  const userId = req.cookies.jsonWebToken;
+  const userId = req.cookies.id;
+  console.log(userId);
   try {
     const { name, about } = req.body;
     const user = await User.findOneAndUpdate(
@@ -103,10 +100,9 @@ const patchUser = async (req, res, next) => {
     next(e);
   }
 };
-
 // eslint-disable-next-line consistent-return
 const patchUserAvatar = async (req, res, next) => {
-  const userId = req.cookies.jsonWebToken;
+  const userId = req.cookies.id;
   try {
     const { avatar } = req.body;
     const user = await User.findOneAndUpdate(
@@ -129,7 +125,6 @@ const patchUserAvatar = async (req, res, next) => {
     next(e);
   }
 };
-
 const login = (req, res, next) => {
   const { email, password } = req.body;
 
