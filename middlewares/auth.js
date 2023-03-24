@@ -9,6 +9,8 @@ module.exports.auth = (req, res, next) => {
     const err = new Error('Необходима авторизация');
     err.statusCode = ERROR_UNAUTHORIZED;
     next(err);
+    // eslint-disable-next-line consistent-return
+    return;
   }
   const token = authorization.replace('Bearer ', '');
 
@@ -19,6 +21,8 @@ module.exports.auth = (req, res, next) => {
     const err = new Error('Необходима авторизация');
     err.statusCode = ERROR_UNAUTHORIZED;
     next(err);
+    // eslint-disable-next-line consistent-return
+    return;
   }
   req.user = payload;
   next();

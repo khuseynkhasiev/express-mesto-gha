@@ -2,12 +2,16 @@ const router = require('express').Router();
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { celebrate, Joi } = require('celebrate');
 const {
-  getUsers, getUser, patchUser, patchUserAvatar,
+  getUsers, getUserMe, getUserId, patchUser, patchUserAvatar,
 } = require('../controllers/users');
 
 router.get('/', getUsers);
-router.get('/:userId', getUser);
-router.get('/me', getUser);
+router.get('/:userId', celebrate({
+  params: Joi.object().keys({
+    cardId: Joi.string().required().regex(/^[a-zA-Z0-9]{24}$/),
+  }).unknown(true),
+}), getUserId);
+router.get('/me', getUserMe);
 router.patch('/me', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
