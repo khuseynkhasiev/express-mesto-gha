@@ -11,6 +11,8 @@ const {
   ERROR_CONFLICT,
 } = require('../errors');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 // eslint-disable-next-line consistent-return
 const getUsers = async (req, res, next) => {
   try {
@@ -180,7 +182,7 @@ const login = (req, res, next) => {
 
   User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jsonWebToken.sign({ _id: user._id }, 'some-secret-key', {
+      const token = jsonWebToken.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {
         expiresIn: '7d',
       });
       res
