@@ -7,6 +7,7 @@ npm-debug.log*
 node_modules
 mestodb
 .idea
+.env
 
 # Optional npm cache directory
 .npm

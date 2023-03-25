@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 // eslint-disable-next-line import/no-extraneous-dependencies
+require('dotenv').config();
+// eslint-disable-next-line import/no-extraneous-dependencies
 const {
   errors, celebrate, Joi,
 } = require('celebrate');

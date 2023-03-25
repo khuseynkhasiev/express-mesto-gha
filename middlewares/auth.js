@@ -1,22 +1,20 @@
 const jsonWebToken = require('jsonwebtoken');
 const { ERROR_UNAUTHORIZED } = require('../errors');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
 // eslint-disable-next-line consistent-return
 module.exports.auth = (req, res, next) => {
-  const { authorization } = req.headers;
-
-  if (!authorization || !authorization.startsWith('Bearer ')) {
+  const token = req.cookies.jsonWebToken;
+  if (!token) {
     const err = new Error('Необходима авторизация');
     err.statusCode = ERROR_UNAUTHORIZED;
     next(err);
     // eslint-disable-next-line consistent-return
     return;
   }
-  const token = authorization.replace('Bearer ', '');
-
   let payload;
   try {
-    payload = jsonWebToken.verify(token, 'some-secret-key');
+    payload = jsonWebToken.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
   } catch (e) {
     const err = new Error('Необходима авторизация');
     err.statusCode = ERROR_UNAUTHORIZED;
